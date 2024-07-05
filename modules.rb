@@ -14,7 +14,9 @@ end
 
 # SELF-EXPLANATORY
 def get_image_data(image)
-  return image.get_pixels, image.width, image.height
+  @pixels = image.get_pixels
+  @columns = image.width
+  @lines = image.height
 end
 
 
@@ -167,7 +169,7 @@ def drop_profile(x0,y0,signal)
 end
 
 
-def sky
+def calculate_tolerance
   margin = 0.1
   sumblack = 0
   count = 0
@@ -178,5 +180,5 @@ def sky
       sumblack += black_pixel(c,l) 
     end
   end
-  return sumblack/count
+  @tolerance = FACTOR_COLOR*sumblack/count
 end
