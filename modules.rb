@@ -1,6 +1,4 @@
 
-
-
 parameters_file = ARGV[0]
 if parameters_file.nil? then puts 'Missing parameters file. ABORTED.'; abort end 
 tmp = parameters_file.split('/').last
@@ -40,18 +38,17 @@ end
 
 
 # CREATE DIRECTORY IF IT DOESN'T EXISTS AND SANITIZE 'FILE' NAME
-def file_to_dir(file,dir)
-  final_dir = @workdir+dir
-  system 'mkdir', '-p', final_dir
+def file_directory(file,dir)
+  system 'mkdir', '-p', @workdir+dir
   file.sub!(@workdir,'')
-  return file,final_dir
+  return file,@workdir+dir
 end
 
 
 
 # LOAD TRANSFORMED PIXELS INTO IMAGE
 def write_image(file,write)
-  file,dir = file_to_dir(file,'images/')
+  file,dir = file_directory(file,'images/')
   dimension = [@columns,@lines]
   image2 = MiniMagick::Image.get_image_from_pixels(@pixels, dimension,'rgb',8,'png')
   if write then image2.write(dir+file) end
@@ -208,7 +205,7 @@ end
 
 
 # AVERAGES PIXEL COLOR OVER A SMALL REGION IN THE SKY. THEN
-# CALCULATES A TOLERANCE FACTOR (FOR DROP DETECTION) FROM IT.
+# CALCULATES A TOLERANCE FACTOR FOR DROP DETECTION.
 def calculate_tolerance
   margin = 0.1
   sumblack = 0
