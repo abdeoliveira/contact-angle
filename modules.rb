@@ -1,3 +1,6 @@
+
+
+
 #IMPORTS RAW IMAGE AND DECOLORIZE 
 def import_image(file)
   image = MiniMagick::Image.open(file)
@@ -12,12 +15,16 @@ end
 
 
 
+
+
 # SELF-EXPLANATORY
 def get_image_data(image)
   @pixels = image.get_pixels
   @columns = image.width
   @lines = image.height
 end
+
+
 
 
 # LOAD TRANSFORMED PIXELS INTO IMAGE
@@ -33,6 +40,7 @@ end
 
 
 
+
 # BOUNDARY CONDITIONS
 def  boundary(c,l)
   if c >= @columns then c = @columns - 1 end
@@ -41,6 +49,7 @@ def  boundary(c,l)
   if l < 0 then l = 0 end
   return c,l
 end
+
 
 
 
@@ -60,6 +69,7 @@ end
 
 
 
+
 # CHANGE PIXEL COLOR
 def change_pixels(c,l,d,r,g,b)
   c = c.to_i
@@ -76,6 +86,7 @@ end
 
 
 
+# AVERAGE PIXEL COLOR OVER A SQUARE REGION
 def square_pixel(c,l,s)
   c = c.to_i
   l = l.to_i
@@ -92,7 +103,7 @@ end
 
 
 
-# FIND (x0,y0) POSITION OF DROP APEX
+# FIND POSITION OF DROP APEX (x0,y0).
 def drop_top
   ydelta = 5
   x = []
@@ -114,7 +125,10 @@ def drop_top
 end
 
 
-# FIND LOWER BASE
+
+
+
+# FIND VERTICAL POSITION OF LOWER BASE
 def find_bottom(y0)
   margin = 0.1
   sumy = 0
@@ -131,7 +145,9 @@ end
 
 
 
-# FINDS LEFT AND RIGTH DROP PROFILE SIDES
+
+
+# FINDS DROP PROFILE SIDES (SIGNAL = -1 FOR LEFT AND +1 FOR RIGHT)
 def drop_profile(x0,y0,signal)
 
   theta_points = 100
@@ -169,6 +185,11 @@ def drop_profile(x0,y0,signal)
 end
 
 
+
+
+
+# AVERAGES PIXEL COLOR OVER A SMALL REGION IN THE SKY. THEN
+# CALCULATES A TOLERANCE FACTOR (FOR DROP DETECTION) FROM IT.
 def calculate_tolerance
   margin = 0.1
   sumblack = 0
