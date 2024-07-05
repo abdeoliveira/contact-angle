@@ -4,9 +4,9 @@ require 'parallel'
 load './modules.rb'
 load ARGV[0]
 
-cpus = ARGV[1].to_i
-if ARGV[1].nil? then cpus = 1 end
 
+cpus = ARGV[1].to_i
+cpus ||= 1
 list = Dir[WORKING_DIR+IMAGE_PATTERN]
 
 Parallel.each(list, in_processes: cpus) do |file|
