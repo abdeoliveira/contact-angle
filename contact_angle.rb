@@ -2,14 +2,12 @@
 require 'mini_magick'
 require 'parallel'
 load './modules.rb'
-load ARGV[0]
 
 
-cpus = ARGV[1].to_i
-cpus ||= 1
-list = Dir[WORKING_DIR+IMAGE_PATTERN]
+list = Dir[@workdir+IMAGE_PATTERN]
 
-Parallel.each(list, in_processes: cpus) do |file|
+
+Parallel.each(list, in_processes: @cpus) do |file|
 
     
   image  = import_image(file)

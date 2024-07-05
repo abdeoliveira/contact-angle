@@ -1,6 +1,20 @@
 
 
 
+parameters_file = ARGV[0]
+if parameters_file.nil? then puts 'Missing parameters file. ABORTED.'; abort end 
+tmp = parameters_file.split('/').last
+@workdir = parameters_file.split(tmp).first+'/'
+load parameters_file
+
+
+
+@cpus = ARGV[1]
+@cpus ||= 1
+@cpus = @cpus.to_i
+
+
+
 #IMPORTS RAW IMAGE AND DECOLORIZE 
 def import_image(file)
   image = MiniMagick::Image.open(file)
@@ -16,7 +30,6 @@ end
 
 
 
-
 # SELF-EXPLANATORY
 def get_image_data(image)
   @pixels = image.get_pixels
@@ -26,23 +39,24 @@ end
 
 
 
-def create_dir(dir)
-  final_dir = WORKING_DIR+dir
+# CREATE DIRECTORY IF IT DOESN'T EXISTS AND SANITIZE 'FILE' NAME
+def file_to_dir(file,dir)
+  final_dir = @workdir+dir
   system 'mkdir', '-p', final_dir
+  file.sub!(@workdir,'')
+  return file,final_dir
 end
+
 
 
 # LOAD TRANSFORMED PIXELS INTO IMAGE
 def write_image(file,write)
-  final_dir = WORKING_DIR+'processed/'
-  system 'mkdir', '-p', final_dir
-  file.sub!(WORKING_DIR,'')
+  file,dir = file_to_dir(file,'images/')
   dimension = [@columns,@lines]
   image2 = MiniMagick::Image.get_image_from_pixels(@pixels, dimension,'rgb',8,'png')
-  if write then image2.write(final_dir+file) end
+  if write then image2.write(dir+file) end
   return image2
 end
-
 
 
 
