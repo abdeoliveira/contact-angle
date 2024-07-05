@@ -26,6 +26,11 @@ end
 
 
 
+def create_dir(dir)
+  final_dir = WORKING_DIR+dir
+  system 'mkdir', '-p', final_dir
+end
+
 
 # LOAD TRANSFORMED PIXELS INTO IMAGE
 def write_image(file,write)
