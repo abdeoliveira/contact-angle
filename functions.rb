@@ -52,21 +52,15 @@ end
 
 
 
-def write_data(file,dir,x,y)
+def write_data(file,dir,x,y,p)
   dir = create_directory(dir)
   file.sub!(IMAGE_PATTERN,'.dat')
   xyfile = dir + 'xy-' + file 
-  xfile = dir + 'x-' + file
-  yfile = dir + 'y-' + file
   File.write(xyfile,'',mode:'w')
-  File.write(xfile,'',mode:'w')
-  File.write(yfile,'',mode:'w')
   x.each.with_index do |c,i|
-    c = c.round(2)
-    l = y[i].round(2)
+    c = c.round(p)
+    l = y[i].round(p)
     File.write(xyfile,"#{c} #{l}\n",mode:'a')
-    File.write(xfile,"#{c} ",mode:'a')
-    File.write(yfile,"#{l} ",mode:'a')
   end
 end
 

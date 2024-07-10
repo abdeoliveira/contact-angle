@@ -68,7 +68,7 @@ Parallel.each(list, in_processes: @cpus) do |pathfile|
   
   image = write_image(file,true)
   
-  write_data(file,'data/',x,y)
+  write_data(file,'data/',x,y,2)
 
   puts file
 end
