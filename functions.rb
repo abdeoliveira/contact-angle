@@ -113,11 +113,12 @@ end
 
 
 # CHANGE PIXEL COLOR
-def change_pixels(c,l,d,r,g,b)
+def change_pixels(c,l,s,color)
   c = c.to_i
   l = l.to_i
-  (c-d..c+d).each do |x|
-    (l-d..l+d).each do |y|
+  r,g,b = color
+  (c-s..c+s).each do |x|
+    (l-s..l+s).each do |y|
       x,y = boundary(x,y)
       @pixels[y][x][0] = r
       @pixels[y][x][1] = g

@@ -38,10 +38,12 @@ Parallel.each(list, in_processes: @cpus) do |pathfile|
   
   x = []
   y = []
+  size = 2
+  color = [0,255,0]
   x_left.each.with_index do |c,i|
     l = y_left[i]
     if c > x1 and l < y1 
-      change_pixels(c,l,2,0,255,0) 
+      change_pixels(c,l,size,color) 
       x << c
       y << @lines - l
     end
@@ -51,16 +53,18 @@ Parallel.each(list, in_processes: @cpus) do |pathfile|
   x_right.each.with_index do |c,i|
     l = y_right[i]
     if c < x2 and l < y2 
-      change_pixels(c,l,2,0,255,0) 
+      change_pixels(c,l,size,color) 
       x << c
       y << @lines - l
     end
   end
   
 
-  change_pixels(x0,y0,3,255,0,0)
-  change_pixels(x1,y1,3,255,0,0)
-  change_pixels(x2,y2,3,255,0,0)
+  size = 3
+  color = [255,0,0]
+  change_pixels(x0,y0,size,color)
+  change_pixels(x1,y1,size,color)
+  change_pixels(x2,y2,size,color)
 
 
 
