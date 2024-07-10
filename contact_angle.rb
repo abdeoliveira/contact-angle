@@ -65,15 +65,10 @@ Parallel.each(list, in_processes: @cpus) do |pathfile|
   change_pixels(x0,y0,size,color)
   change_pixels(x1,y1,size,color)
   change_pixels(x2,y2,size,color)
-
-
-
-  #file.sub!('(','_').sub!(')','').gsub!(' ','')
   
   image = write_image(file,true)
   
   write_data(file,'data/',x,y)
-
 
   puts file
 end
