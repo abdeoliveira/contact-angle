@@ -37,18 +37,44 @@ end
 
 
 
-# CREATE DIRECTORY IF IT DOESN'T EXISTS AND SANITIZE 'FILE' NAME
-def file_directory(file,dir)
-  system 'mkdir', '-p', @workdir+dir
-  file.sub!(@workdir,'')
-  return file,@workdir+dir
+# CREATE DIRECTORY IF IT DOESN'T EXISTS 
+def create_directory(dir)
+  dir = @workdir+dir
+  system 'mkdir', '-p', dir
+  return dir
+end
+
+
+# STRIP PATHFILE 
+def filename(pathfile)
+  return pathfile.sub(@workdir,'')
+end
+
+
+
+def write_data(file,dir,x,y)
+  dir = create_directory(dir)
+  file.sub!(IMAGE_PATTERN,'.dat')
+  xyfile = dir + 'xy-' + file 
+  xfile = dir + 'x-' + file
+  yfile = dir + 'y-' + file
+  File.write(xyfile,'',mode:'w')
+  File.write(xfile,'',mode:'w')
+  File.write(yfile,'',mode:'w')
+  x.each.with_index do |c,i|
+    c = c.round(2)
+    l = y[i].round(2)
+    File.write(xyfile,"#{c} #{l}\n",mode:'a')
+    File.write(xfile,"#{c} ",mode:'a')
+    File.write(yfile,"#{l} ",mode:'a')
+  end
 end
 
 
 
 # LOAD TRANSFORMED PIXELS INTO IMAGE
 def write_image(file,write)
-  file,dir = file_directory(file,'images/')
+  dir = create_directory('images/')
   dimension = [@columns,@lines]
   image2 = MiniMagick::Image.get_image_from_pixels(@pixels, dimension,'rgb',8,'png')
   if write then image2.write(dir+file) end
