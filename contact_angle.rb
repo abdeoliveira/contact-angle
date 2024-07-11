@@ -80,25 +80,26 @@ end
    file = pathfile.split('/').last
    @workdir = pathfile.sub(file,'')
    
-   a,b,c,d,e,f,xplot,yplot = python_ellipse_fit(pathfile)
 
+   a,b,c,d,e,f,xplot,yplot = python_ellipse_fit(pathfile)
    write_data('ellipse_'+file,xplot,yplot)
    
+
    border_file = pathfile.sub('xy-','borders-')
-   
    x0,x1,x2,y0,y1,y2 = border_array(border_file)
    
+
    x1,dump = ellipse_fit_intercept(a,b,c,d,e,f,y1)
-   
    dump,x2 = ellipse_fit_intercept(a,b,c,d,e,f,y2)
    
+
    range = (x2 - x1).to_i
-   
    xx,yy,ang1 = tangent(x1,y1,range,a,b,c,d,e,f)
    write_data('tangent_left_'+file,xx,yy)
    xx,yy,ang2 = tangent(x2,y2,range,a,b,c,d,e,f)
    write_data('tangent_right_'+file,xx,yy)
    
+
    ang1 = ang1.abs.round(2)
    ang2 = ang2.abs.round(2)
    ang = ((ang1+ang2)/2).round(2)
