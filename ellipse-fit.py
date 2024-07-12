@@ -117,14 +117,15 @@ if __name__ == '__main__':
     x,y = loadtxt(sys.argv[1],unpack=True)
 
     coeffs = fit_ellipse(x,y)
-    print(coeffs)
 
     x0, y0, ap, bp, e, phi = cart_to_pol(coeffs)
 
-    #plt.plot(x, y, 'x')     # given points
-    x, y = get_ellipse_pts((x0, y0, ap, bp, e, phi))
-    print(x)
-    print(y)
-   # plt.plot(x, y)
-   # plt.show()
+    xfit, yfit = get_ellipse_pts((x0, y0, ap, bp, e, phi))
+
+    fitdata = np.array([ap,bp,x0,y0])
+
+    print(coeffs,xfit,yfit,x,y,fitdata)
+
+#    plt.plot(x, y)
+#    plt.show()
 
