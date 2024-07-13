@@ -78,7 +78,7 @@ def gnuplot(xdata,ydata,file,range)
 Gnuplot.open do |gp|
   Gnuplot::Plot.new( gp ) do |plot|
     
-    plot.terminal "pdf"
+    plot.terminal "pdf dashed"
     plot.output File.expand_path("../#{file}",'__FILE__')
   
     plot.xrange "[#{range[0]}:#{range[1]}]"
@@ -100,22 +100,22 @@ Gnuplot.open do |gp|
 
     plot.data = [
       Gnuplot::DataSet.new( [x0,y0] ) { |ds|
-        ds.with = "lines"
+        ds.with = "lines lc rgb 'blue'"
         ds.title = "left tangent"
       },
     
       Gnuplot::DataSet.new( [x1, y1] ) { |ds|
-        ds.with = "lines"
+        ds.with = "lines lc rgb 'black'"
         ds.title = "right tangent"
       },
       
       Gnuplot::DataSet.new( [x2, y2] ) { |ds|
-        ds.with = "lines"
+        ds.with = "lines lc rgb 'red'"
         ds.title = "fitted ellipse"
       },
       
       Gnuplot::DataSet.new( [x3, y3] ) { |ds|
-        ds.with = "points pointtype 2 pointsize 0.5"
+        ds.with = "points pointtype 2 pointsize 0.5 lc rgb 'green'"
         ds.title = "image data"
       },
       
@@ -129,6 +129,25 @@ Gnuplot.open do |gp|
 
   end
 end
+end
+
+
+def angle(ang,side)
+  if side == 'r'
+    if ang < 0 
+      ang = -ang 
+    else
+      ang = 180 - ang
+    end
+  end
+  if side == 'l'
+    if ang < 0 
+      ang += 180
+    else
+      ang = ang
+    end
+  end
+  return ang.round(2)
 end
 
 #===========================
@@ -203,8 +222,8 @@ puts "FILE;LEFT ANGLE; RIGHT ANGLE;AVERAGE ANGLE"
 
 
 
-   ang1 = ang1.abs.round(2)
-   ang2 = ang2.abs.round(2)
+   ang1 = angle(ang1,'l')
+   ang2 = angle(ang2,'r')
    ang = ((ang1+ang2)/2).round(2)
    puts "#{file};#{ang1};#{ang2};#{ang}"
 end
